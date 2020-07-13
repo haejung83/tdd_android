@@ -1,6 +1,6 @@
 package com.currency
 
-class Dollar(var amount: Int) {
+class Dollar(private var amount: Int) {
 
     fun times(multiplier: Int): Dollar {
         return Dollar(amount * multiplier)
@@ -10,5 +10,5 @@ class Dollar(var amount: Int) {
         val dollar = other as Dollar
         return amount == dollar.amount
     }
-   
+
 }
