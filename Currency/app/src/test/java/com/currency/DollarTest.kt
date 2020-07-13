@@ -1,5 +1,6 @@
 package com.currency
 
+import com.google.common.truth.Truth.assertThat
 import junit.framework.Assert.assertEquals
 import org.junit.Test
 
@@ -12,6 +13,12 @@ class DollarTest {
         assertEquals(10, product.amount)
         product = five.times(3)
         assertEquals(15, product.amount)
+    }
+
+    @Test
+    fun dollar_equality() {
+        assertThat(Dollar(5) == Dollar(5)).isTrue()
+        assertThat(Dollar(5) == Dollar(6)).isFalse()
     }
 
 }
