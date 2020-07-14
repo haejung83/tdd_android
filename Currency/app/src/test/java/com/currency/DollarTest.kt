@@ -6,6 +6,13 @@ import org.junit.Test
 class DollarTest {
 
     @Test
+    fun franc_equality() {
+        assertThat(Dollar(5) == Dollar(5)).isTrue()
+        assertThat(Dollar(6) == Dollar(6)).isTrue()
+        assertThat(Dollar(5) == Dollar(6)).isFalse()
+    }
+
+    @Test
     fun dollar_times() {
         val five = Dollar(5)
         assertThat(five.times(2)).isEqualTo(Dollar(10))
