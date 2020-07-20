@@ -172,6 +172,46 @@
   * 팩토리 메서드를 도입하여 테스트 코드에서 콘크리트 하위 클래스의 존재 사실을 분리해냈다.
   * 하위 클래스가 사라지면 몇몇 테스트는 불필요한 여분의 것이 된다는 것을 인색했다. 하지만 일단 그냥 뒀다.
 
+#### 9장 - 우리가 사는 시간
+
+> 불필요한 하위 클래스를 제거하는 데 도움이 될까? 통화 개념을 도입해보자
+>
+> 통화 개념을 구현하려면 어떻게 해야될까? 아차 실수.. 통화 개념을 테스트 하려면 어떻게 테스트하길 원하는가?
+>
+> 간단하게 문자열로 대신해서 해보자
+
+```kotlin
+abstract class Money(
+    protected val amount: Int,
+    protected val currency: String
+) {
+    fun currency(): String = currency
+}
+```
+
+Dollar/Franc의 times에서 각각의 생성자를 호출하는 부분이 있다. 이를 Money의 팩토리 함수로 바꿔보자
+
+```kotlin
+class Dollar: Money {
+    fun times(multiplier: Int) {
+        return Dollar(amount * multiplier)
+    }
+    ..를 아래 처럼 변경해보자
+    fun times(multiplier: Int) {
+        return Money.dollar(amount * amultiplier)
+    }
+}
+```
+
+Franc도 마찬가지다.
+
+* 여기서의 흐름
+  * 큰 설계 아이디어를 다루다가 조금 곤경에 빠졌다. 그래서 좀 전에 주목했던 더 작은 작업을 수행했다.
+  * 다른 부분들을 호출자(팩토리 메서드)로 옮김으로써 두 생성자를 일치시켰다.
+  * **중요** times()가 팩토리 메서드를 사용하도록 만들기 위해 리팩토링을 잠시 중단했다.
+  * 비슷한 리팩토링(Franc에서 했던것을 Dollar)을 한번의 큰 단계로 처리했다.
+  * 동일한 생성자들을 상위 클래스로 올렸다.
+
 
 
 

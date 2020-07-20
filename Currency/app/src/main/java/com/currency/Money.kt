@@ -1,6 +1,9 @@
 package com.currency
 
-abstract class Money(protected val amount: Int) {
+abstract class Money(
+    protected val amount: Int,
+    protected val currency: String
+) {
 
     override fun equals(other: Any?): Boolean {
         val money = other as Money
@@ -9,9 +12,11 @@ abstract class Money(protected val amount: Int) {
 
     abstract fun times(multiplier: Int): Money
 
+    fun currency(): String = currency
+
     companion object {
-        fun dollar(amount: Int): Money = Dollar(amount)
-        fun franc(amount: Int): Money = Franc(amount)
+        fun dollar(amount: Int): Money = Dollar(amount, "USD")
+        fun franc(amount: Int): Money = Franc(amount, "CHF")
     }
 
 }
