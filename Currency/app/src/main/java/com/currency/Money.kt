@@ -1,16 +1,18 @@
 package com.currency
 
-abstract class Money(
+open class Money(
     protected val amount: Int,
     protected val currency: String
 ) {
 
     override fun equals(other: Any?): Boolean {
         val money = other as Money
-        return amount == money.amount && javaClass == money.javaClass
+        return amount == money.amount && currency == money.currency
     }
 
-    abstract fun times(multiplier: Int): Money
+    open fun times(multiplier: Int): Money {
+        return Money(amount * multiplier, currency)
+    }
 
     fun currency(): String = currency
 

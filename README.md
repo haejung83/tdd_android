@@ -212,6 +212,63 @@ Franc도 마찬가지다.
   * 비슷한 리팩토링(Franc에서 했던것을 Dollar)을 한번의 큰 단계로 처리했다.
   * 동일한 생성자들을 상위 클래스로 올렸다.
 
+#### 10장 - 흥미로운 시간
+
+> 공용 times
+
+Dollar/Franc의 times()에서 Money를 반환하도록 해보자
+
+```kotlin
+class Dollar: Money {
+    fun times(multiplier: Int): Money {
+        return Dollar(amount * multiplier, "USD")
+    }
+    ..를 아래 처럼 변경해보자
+    fun times(multiplier: Int): Money {
+        return Money(amount * multiplier, "USD")
+    }
+}
+```
+
+* 하지만 컴파일 에러가 난다. Money가 Abstract이기 때문이다. Concrete로 변경해보자
+
+```kotlin
+abstract class Money { ... }
+...를 아래 처럼 변경해보자
+open class Money { 
+    open fun times(multiplier: Int): Money { ... }
+}
+```
+
+* 하지만 테스트가 실패한다.
+  * 이유는 equals 함수의 구현에 있다. 이전에 클래스를 비교하도록 하였다. Money와 Franc가 비교를 하게 되니 테스트가 실패한다.
+  * 여기서 중요한것은 클래스를 비교하는 것이 아니라. amount와 currency를 비교해야 한다.
+* 비교를 수행하는 테스트를 추가한다.
+
+```kotlin
+@Test
+fun franc_money_equality() {
+    assertThat(Money(10, "CHF")).isEqualTo(Franc(10))
+}
+```
+
+* 비교를 수정한다.
+
+```kotlin
+open class Money {    
+	override fun equals(other: Any?): Boolean {
+        val money = other as Money
+        return amount == money.amount && currency == money.currency // amount와 currency를 비교한다
+    }
+}
+```
+
+* 여기서의 흐름
+  * 두 times()를 일치시키기 위해 그 메서드들이 호출하는 다른 메서드들을 인라인시킨 후 상수를 변수로 바꿔주었다.
+  * 단지 디버깅을 위해 테스트 없이 toString()을 작성했다.
+  * Franc 대신 Money를 반환하는 변경을 시도한 뒤 그것이 잘 작동할지를 테스트가 말하도록 했다.
+  * 실험해본 걸 뒤로 물리고 다른 테스트를 작성했다. 테스트를 작동했더니 실험도 제대로 작동했다.
+
 
 
 

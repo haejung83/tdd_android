@@ -1,9 +1,3 @@
 package com.currency
 
-class Dollar(amount: Int, currency: String) : Money(amount, currency) {
-
-    override fun times(multiplier: Int): Money {
-        return dollar(amount * multiplier)
-    }
-
-}
+class Dollar(amount: Int, currency: String = "USD") : Money(amount, currency)

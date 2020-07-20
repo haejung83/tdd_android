@@ -48,4 +48,9 @@ class CurrencyTest {
         assertThat(Money.franc(1).currency()).isEqualTo("CHF")
     }
 
+    @Test
+    fun money_franc_equality() {
+        assertThat(Money(10, "CHF")).isEqualTo(Franc(10))
+    }
+
 }
